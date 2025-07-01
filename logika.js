@@ -11,12 +11,14 @@ resetButton.addEventListener("click",reset);
 
 window.addEventListener("DOMContentLoaded",function(){
     updateNumbers();
+    const firstCoin = generateCoin();
+    drawLogo(firstCoin.coin);
 })
 
 function updateNumbers()
 {
-    paraHead.textContent="Heads: "+ headCounter;
-    paraTail.textContent="Tails: "+ tailsCounter;
+    paraHead.textContent="Head: "+ headCounter;
+    paraTail.textContent="Tail: "+ tailsCounter;
 }
 
 
@@ -31,19 +33,22 @@ function generateCoin(){
 
 function flip(){
     const resultCoin=generateCoin();
-    const result=resultCoin.coin;
+    const result=resultCoin.coin; 
     console.log("Ovo je rezultat " + result);
-    if(result=="head"){
-        drawStaticLogoHeads();
+    startCanvasAnimation(1000, result);
+
+    setTimeout(()=>{
+        if(result=="head"){
         headCounter++;
         console.log("heads se pao");
     }
     else if(result=="tail"){
-        drawStaticLogoHTails();
         tailsCounter++;
         console.log("tails se pao");
     }
     updateNumbers();
+    },1000);
+    
 }
 
 function reset(){
@@ -52,9 +57,18 @@ function reset(){
     updateNumbers();
 }
 
+function drawLogo(res){
+        if(res=="tail"){
+            drawStaticLogoHTails();
+        }
+        else{
+            drawStaticLogoHeads();
+        }
+}
 
 
 
+//Animacije
 const canvas= document.getElementById("canvas1");
 const ctx=canvas.getContext('2d');
 
@@ -68,18 +82,56 @@ canvas.height=100;
 const CANVAS_WIDTH=canvas.width;
 const CANVAS_HEIGHT=canvas.height;
 
-// let animationRunning=false;
-// let animationID=null;
-// const SpriteWidth=SpriteImage.width;
-// const SpriteHeight=SpriteImage.height/30;
-// let frameRate=0;
-// let gameFrame=0;
-// let number = 0;
-// const staggerFrame=3;
-// let diff=null;
-// let x = 0;
-// let frameTimer = 0; // piksela u sekundi
-// const frameInterval= 1000/30;
+let animationRunning=false;
+let animationID=null;
+const SpriteWidth=SpriteImage.width;
+const SpriteHeight=SpriteImage.height/15;
+let frameRate=0;
+let gameFrame=0;
+let number = 0;
+let diff=null;
+let x = 0;
+let frameTimer = 0; // piksela u sekundi
+const frameInterval= 1000/20;
+
+function animate(timmy){
+    if(timmy){
+       diff = timmy-number;
+        // console.log("frame",diff);
+        number=timmy;
+    }
+    if(!animationRunning)return false;
+    ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+    ctx.fillRect(0,0,1,1);
+    //ctx.drawImage(SpriteImage,sx,sy,sw,sh,dx,dy,dw,dh);
+    // console.log(SpriteWidth);
+    // console.log(SpriteHeight);
+    // console.log("canvas"+CANVAS_WIDTH);
+    // console.log("canvas heighy"+CANVAS_HEIGHT);
+  
+    frameTimer += diff;
+    if (frameTimer >= frameInterval) {
+        frameRate = (frameRate + 1) % 15; 
+        // console.log(frameTimer);
+        frameTimer = 0;
+        
+    }
+  
+    ctx.drawImage(SpriteImage,0,frameRate*SpriteHeight,SpriteWidth,SpriteHeight,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+    animationID=requestAnimationFrame(animate);
+}
+ 
+function startCanvasAnimation(duration,res) {
+    animationRunning = true;
+    animate(); 
+
+    setTimeout(() => {
+        animationRunning = false;
+        cancelAnimationFrame(animationID);
+        drawLogo(res);
+    }, duration); 
+
+}
 
 //  drawStaticLogoHeads();
 
@@ -88,6 +140,7 @@ function drawStaticLogoHeads() {
     logoImg.src = "images/heads.png";
     logoImg.onload = () => {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.fillRect(0,0,1,1);
         ctx.drawImage(logoImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
     };
@@ -99,6 +152,7 @@ function drawStaticLogoHTails(){
     logoImg.src = "images/tails.png";
     logoImg.onload = () => {
         ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.fillRect(0,0,1,1);
         ctx.drawImage(logoImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         
     };
