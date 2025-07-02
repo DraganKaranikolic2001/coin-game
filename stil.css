@@ -7,11 +7,12 @@
 body{
     height: 100%;
     background: linear-gradient(45deg, #1f5a82, #2f6d9e);
+   
 }
 .container{
     margin: 0;
-    height: 90%;
     width: 70%;
+    border : 3px solid navy;
     border-radius: 10px;
     box-shadow: 5px 15px 20px rgba(255, 255, 255, 0.301);
     background-color: white;
@@ -19,9 +20,9 @@ body{
     transform: translate(-50%,-50%);
     top: 50%;
     left:50%;
-    background-color:grey;
-    max-width: 600px;
-    max-height: 600px;
+    background-color:#cfd8dc;
+    max-width: 650px;
+    max-height: 650px;
 
 }
 .coin{
@@ -37,7 +38,6 @@ body{
 }
 .coin canvas{
     width: 200%;
-    
 }
 .headliner{
     box-shadow: 0 0 20px rgba(0,139,253,0.25);
@@ -48,6 +48,7 @@ body{
     align-items: center;
     border-radius: 10px;
     background-color: white;
+    border-bottom: 3px solid navy;
 }
 h2{
     color: midnightblue;
@@ -57,17 +58,17 @@ h2{
         rgba(0, 0, 0, 0.2);
 }
 p{
-    color: red;
-    font-size: 1.3rem;
+    color: #1f5a82;
     text-shadow: 2px 2px 4px
         rgba(0, 0, 0, 0.2);
     border: 2px solid #1f5a82;
     border-radius:10px ;
-    padding: 1%;
     width: 20%;
     display: flex;
     text-align: center;
     justify-content: center;
+      font-weight: bold;
+    
 }
 .buttons{
     width: 100%;
@@ -77,19 +78,52 @@ p{
     box-shadow: 0 0 20px rgba(0,139,253,0.25);
     background-color: white;
     border-radius:10px;
+    border-top: 3px solid navy;
 }
 button{
     width: 20%;
     outline: none;
     border: none;
     height: 80%;
-    margin-top: 1%;
-    background-color: grey;
+    margin-top: 0.4vh;
+    background-color: #cfd8dc;
     border-radius:10px ;
-    color: white;
+    color: #1f5a82;
+    font-weight: bold;
+    border: 3px solid navy;
 
 }
 button:hover{
-    background-color: #1f5a82;;
+    background-color: #1f5a82;
+    color: white;
+}
 
+button:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease-in-out;
+}
+
+select#game-goal {
+    width: 20%;
+    height: 80%;
+    margin-top: 0.4vh;
+    background-color: #cfd8dc;
+    border-radius: 10px;
+    color: #1f5a82;
+    font-weight: bold;
+    border: 3px solid navy;
+    text-align: center;
+    outline: none;
+    font-family: sans-serif;
+    padding-left: 10px;
+}
+
+select#game-goal:hover {
+    background-color: #1f5a82;
+    color: white;
+    cursor: pointer;
+}
+.win {
+  box-shadow: 0 0 15px gold;
+  background-color: #fff8dc;
 }

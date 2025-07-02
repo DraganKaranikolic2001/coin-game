@@ -6,20 +6,26 @@
         <title>Coin game</title>
     </head>
     <body>
-        <div class="container">
-            <div class="headliner">
-                <p id="para-head"></p>
-                <h2>Coin game</h2>
-                <p id="para-tail"></p>
+            <div class="container">
+                <div class="headliner">
+                    <p id="para-head" ></p>
+                    <h2 id="coin-title">Coin game</h2>
+                    <p id="para-tail"></p>
+                </div>
+                <div class="coin">
+                    <canvas id="canvas1"></canvas>
+                </div>
+                <div class="buttons">
+                    <button id="flip-button">Flip</button>
+                    <button id="reset-button">Reset</button>
+                    <select id="game-goal">
+                        <option value="3">First to 3</option>
+                        <option value="5" selected>First to 5</option>
+                        <option value="10">First to 10</option>
+                    </select>
+                </div>
             </div>
-            <div class="coin">
-                <canvas id="canvas1"></canvas>
-            </div>
-            <div class="buttons">
-                <button id="flip-button">Flip</button>
-                <button id="reset-button">Reset</button>
-            </div>
-        </div>
-       <script src="logika.js"></script> 
+        <script src="animations.js"></script>
+        <script src="logika.js"></script> 
     </body>
 </html>

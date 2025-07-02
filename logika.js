@@ -31,7 +31,12 @@ function generateCoin(){
     return coins[randomIndex];
 }
 
+let animationTmp=false;
+
 function flip(){
+    const goal = parseInt(document.getElementById("game-goal").value);
+    if(animationTmp) return;
+    animationTmp=true;
     const resultCoin=generateCoin();
     const result=resultCoin.coin; 
     console.log("Ovo je rezultat " + result);
@@ -41,20 +46,33 @@ function flip(){
         if(result=="head"){
         headCounter++;
         console.log("heads se pao");
-    }
-    else if(result=="tail"){
+        }
+        else if(result=="tail"){
         tailsCounter++;
         console.log("tails se pao");
-    }
-    updateNumbers();
-    },1000);
+        }
+        updateNumbers();
     
+        setTimeout(()=>{
+            if (headCounter === goal) {   
+            alert("Pobeda! Glava je pobedila.");
+            reset();
+         } else if (tailsCounter === goal) {
+            alert("Pobeda! Pismo je pobedilo.");
+            reset();
+        }
+        },110);
+    animationTmp=false;
+    },1000);
+
+   
 }
 
 function reset(){
     headCounter=0;
     tailsCounter=0;
     updateNumbers();
+    
 }
 
 function drawLogo(res){
@@ -66,95 +84,48 @@ function drawLogo(res){
         }
 }
 
-//Animacije
-const canvas= document.getElementById("canvas1");
-const ctx=canvas.getContext('2d');
+function resize(){
 
-const SpriteImage= new Image();
-
-SpriteImage.src="images/0.png";
-
-canvas.width=100;
-canvas.height=100;
-
-const CANVAS_WIDTH=canvas.width;
-const CANVAS_HEIGHT=canvas.height;
-
-let animationRunning=false;
-let animationID=null;
-const SpriteWidth=SpriteImage.width;
-const SpriteHeight=SpriteImage.height/15;
-let frameRate=0;
-let gameFrame=0;
-let number = 0;
-let diff=null;
-let x = 0;
-let frameTimer = 0; // piksela u sekundi
-const frameInterval= 1000/20;
-
-function animate(timmy){
-    if(timmy){
-       diff = timmy-number;
-        // console.log("frame",diff);
-        number=timmy;
+    let width=window.innerWidth;
+    let height=window.innerHeight;
+    const ratio=16/9;
+    const container= document.querySelector(".container");
+    if((width/height)<ratio){
+        container.style.width=width+"px";
+        container.style.height=(width/ratio)+"px";
     }
-    if(!animationRunning)return false;
-    ctx.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    ctx.fillRect(0,0,1,1);
-    //ctx.drawImage(SpriteImage,sx,sy,sw,sh,dx,dy,dw,dh);
-    // console.log(SpriteWidth);
-    // console.log(SpriteHeight);
-    // console.log("canvas"+CANVAS_WIDTH);
-    // console.log("canvas heighy"+CANVAS_HEIGHT);
-  
-    frameTimer += diff;
-    if (frameTimer >= frameInterval) {
-        frameRate = (frameRate + 1) % 15; 
-        // console.log(frameTimer);
-        frameTimer = 0;
-        
+    else{
+        container.style.height=height+"px";
+        container.style.width=(height*ratio)+"px";
     }
-  
-    ctx.drawImage(SpriteImage,0,frameRate*SpriteHeight,SpriteWidth,SpriteHeight,0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-    animationID=requestAnimationFrame(animate);
-}
- 
-function startCanvasAnimation(duration,res) {
-    animationRunning = true;
-    animate(); 
 
-    setTimeout(() => {
-        animationRunning = false;
-        cancelAnimationFrame(animationID);
-        drawLogo(res);
-    }, duration); 
 
-}
+    const elFlip=document.getElementById("flip-button");
+    const elReset=document.getElementById("reset-button");
+    const elNaslov = document.getElementById("coin-title");
+    const elTail= document.getElementById("para-tail");
+    const elHead=document.getElementById("para-head");
 
-//  drawStaticLogoHeads();
+    const base= window.innerHeight;
 
-function drawStaticLogoHeads() {
-    const logoImg = new Image();
-    logoImg.src = "images/heads.png";
-    logoImg.onload = () => {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.fillRect(0,0,1,1);
-        ctx.drawImage(logoImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        
-    };
+    const fontSizeBody = Math.min(20, (base * 0.025));
+    const fontSizeTitle = Math.min(35, Math.max(10,base * 0.06));
+
+    elHead.style.fontSize=fontSizeBody+"px";
+    elTail.style.fontSize=fontSizeBody+"px";
+    elNaslov.style.fontSize=fontSizeTitle+"px";
+    elFlip.style.fontSize=fontSizeBody+"px";
+    elReset.style.fontSize=fontSizeBody+"px";
 }
 
+window.addEventListener("resize", resize);
+window.addEventListener("load",resize);
 
-function drawStaticLogoHTails(){
-    const logoImg = new Image();
-    logoImg.src = "images/tails.png";
-    logoImg.onload = () => {
-        ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.fillRect(0,0,1,1);
-        ctx.drawImage(logoImg, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        
-    };
-}
-
+document.addEventListener('keydown',function(event){
+    if(event.code==="Space")
+        flip();
+    if(event.code==="Escape")
+        reset();
+});
 
 
